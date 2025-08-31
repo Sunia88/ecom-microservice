@@ -11,19 +11,26 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/users")
 public class UserController {
 
     @Autowired
     private final UserService userService;
 
-    @GetMapping("/api/users")
+    //    @GetMapping("/api/users")
+    //    is short way from
+    //    @RequestMapping(value = "/api/users", method = RequestMethod.GET)
+    //    Alternative way
+    @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
         return new ResponseEntity<>(userService.fetchAllUsers(), HttpStatus.OK);
         //Alternative way
         //return ResponseEntity.ok(userService.fetchAllUsers());
     }
 
-    @GetMapping("/api/users/{id}")
+    //    @GetMapping("/api/users/{id}")
+    // is short way because RequestMapping in class level already has /api/users
+    @GetMapping("/{id}")
     public ResponseEntity<Optional<User>> getUser(@PathVariable Long id) {
         Optional<User> user = userService.fetchUser(id);
 
@@ -39,13 +46,17 @@ public class UserController {
     //        return ResponseEntity.ok(userService.fetchUser(id));
     //    }
 
-    @PostMapping("/api/users")
+    //    @PostMapping("/api/users")
+    //    is short way because RequestMapping in class level already has /api/users
+    @PostMapping
     public ResponseEntity<String> createUser(@RequestBody User user) {
         userService.addUser(user);
         return ResponseEntity.ok("User added successfully");
     }
 
-    @PutMapping("/api/users/{id}")
+    //    @PutMapping("/api/users/{id}")
+    //    is short way because RequestMapping in class level already has /api/users
+    @PutMapping("/{id}")
     public ResponseEntity<String> updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
         boolean isUpdated = userService.updateUser(id, updatedUser);
         if (isUpdated) {
