@@ -44,4 +44,14 @@ public class UserController {
         userService.addUser(user);
         return ResponseEntity.ok("User added successfully");
     }
+
+    @PutMapping("/api/users/{id}")
+    public ResponseEntity<String> updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
+        boolean isUpdated = userService.updateUser(id, updatedUser);
+        if (isUpdated) {
+            return ResponseEntity.ok("User updated successfully");
+        } else {
+            return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+        }
+    }
 }

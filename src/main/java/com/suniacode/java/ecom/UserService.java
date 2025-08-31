@@ -34,4 +34,25 @@ public class UserService {
     //        }
     //        return null;
     //    }
+
+    public boolean updateUser(Long id, User updatedUser) {
+        return userList.stream().filter(user -> user.getId().equals(id))
+                .findFirst()
+                .map(existingUser -> {
+                    existingUser.setFirstName(updatedUser.getFirstName());
+                    existingUser.setLastName(updatedUser.getLastName());
+                    return true;
+                }).orElse(false);
+    }
+    // Alternative way to update user
+    //    public boolean userUpdate(Long id, User updatedUser) {
+    //        Optional<User> existingUserOpt = fetchUser(id);
+    //        if (existingUserOpt.isPresent()) {
+    //            User existingUser = existingUserOpt.get();
+    //            existingUser.setFirstName(updatedUser.getFirstName());
+    //            existingUser.setLastName(updatedUser.getLastName());
+    //            return true;
+    //        }
+    //        return false;
+    //    }
 }
