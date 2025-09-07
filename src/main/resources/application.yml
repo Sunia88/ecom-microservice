@@ -3,6 +3,7 @@
 #spring.h2.console.enabled=true
 #spring.datasource.url=jdbc:h2:mem:test
 #spring.jpa.show-sql=true
+#spring.jpa.hibernate.ddl-auto=create
 
 # YAML format
 spring:
@@ -13,3 +14,7 @@ spring:
       enabled: true
   datasource:
     url: jdbc:h2:mem:commdb
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
