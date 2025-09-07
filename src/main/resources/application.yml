@@ -2,6 +2,7 @@
 #spring.application.name=ecom-microservice
 #spring.h2.console.enabled=true
 #spring.datasource.url=jdbc:h2:mem:test
+#spring.jpa.show-sql=true
 
 # YAML format
 spring:
@@ -11,4 +12,4 @@ spring:
     console:
       enabled: true
   datasource:
-    url: jdbc:h2:mem:comm
+    url: jdbc:h2:mem:commdb
