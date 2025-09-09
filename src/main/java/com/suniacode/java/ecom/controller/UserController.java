@@ -1,5 +1,7 @@
-package com.suniacode.java.ecom;
+package com.suniacode.java.ecom.controller;
 
+import com.suniacode.java.ecom.model.User;
+import com.suniacode.java.ecom.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

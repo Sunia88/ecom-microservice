@@ -1,4 +1,4 @@
-package com.suniacode.java.ecom;
+package com.suniacode.java.ecom.model;
 
 public enum UserRole {
     CUSTOMER,

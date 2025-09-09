@@ -1,9 +1,10 @@
-package com.suniacode.java.ecom;
+package com.suniacode.java.ecom.service;
 
+import com.suniacode.java.ecom.repository.UserRepository;
+import com.suniacode.java.ecom.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
