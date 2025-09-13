@@ -1,5 +1,9 @@
 package com.suniacode.java.ecom.service;
 
+import com.suniacode.java.ecom.dto.AddressDTO;
+import com.suniacode.java.ecom.dto.UserRequest;
+import com.suniacode.java.ecom.dto.UserResponse;
+import com.suniacode.java.ecom.model.Address;
 import com.suniacode.java.ecom.repository.UserRepository;
 import com.suniacode.java.ecom.model.User;
 import lombok.RequiredArgsConstructor;
@@ -12,71 +16,71 @@ import java.util.Optional;
 @RequiredArgsConstructor //Alternative way to create constructor for final fields
 public class UserService {
     private final UserRepository userRepository;
-    //    private List<User> userList = new ArrayList<>();
-    //    Using database instead of in-memory list
+
     private Long nextId = 1L;
 
-    //    public UserService(UserRepository userRepository) {
-    //        this.userRepository = userRepository;
-    //    }
-    //Alternative way add annotation @RequiredArgsConstructor from lombok
-
-    public List<User> fetchAllUsers() {
-        return userRepository.findAll();
+    public List<UserResponse> fetchAllUsers() {
+        return userRepository.findAll().stream()
+                .map(this::MapToUserResponse)
+                .toList();
     }
 
-    public void addUser(User user) {
-        //  user.setId(nextId++);
-        // using jpa to create id automatically
-        //  userList.add(user);
-        // using repository to save user
+    public void addUser(UserRequest userRequest) {
+        User user = new User();
+        updateUserFromRequest(user, userRequest);
         userRepository.save(user);
     }
 
-    public Optional<User> fetchUser(Long id) {
-        //        return Optional.ofNullable(userList.stream().filter(user -> user.getId().equals(id))
-        //                .findFirst()
-        //                .orElse(null));
-        // instead of list, using repository to fetch user by id
-        return userRepository.findById(id);
+    public Optional<UserResponse> fetchUser(Long id) {
+        return userRepository.findById(id)
+                .map(this::MapToUserResponse);
     }
 
-    //Alternative way
-    //    public User fetchUser(Long id) {
-    //        for (User user : userList) {
-    //            if (user.getId().equals(id)) {
-    //                return user;
-    //            }
-    //        }
-    //        return null;
-    //    }
-
-    public boolean updateUser(Long id, User updatedUser) {
-    //        return userList.stream().filter(user -> user.getId().equals(id))
-    //                .findFirst()
-    //                .map(existingUser -> {
-    //                    existingUser.setFirstName(updatedUser.getFirstName());
-    //                    existingUser.setLastName(updatedUser.getLastName());
-    //                    return true;
-    //                }).orElse(false);
-        // Instead of list, using repository to update user
+    public boolean updateUser(Long id, UserRequest updatedUserRequest) {
         return userRepository.findById(id)
                 .map(existingUser -> {
-                    existingUser.setFirstName(updatedUser.getFirstName());
-                    existingUser.setLastName(updatedUser.getLastName());
+                    updateUserFromRequest(existingUser, updatedUserRequest);
                     userRepository.save(existingUser);
                     return true;
                 }).orElse(false);
+
     }
-    // Alternative way to update user
-    //    public boolean userUpdate(Long id, User updatedUser) {
-    //        Optional<User> existingUserOpt = fetchUser(id);
-    //        if (existingUserOpt.isPresent()) {
-    //            User existingUser = existingUserOpt.get();
-    //            existingUser.setFirstName(updatedUser.getFirstName());
-    //            existingUser.setLastName(updatedUser.getLastName());
-    //            return true;
-    //        }
-    //        return false;
-    //    }
+
+    private void updateUserFromRequest(User user, UserRequest userRequest) {
+        user.setFirstName(userRequest.getFirstName());
+        user.setLastName(userRequest.getLastName());
+        user.setEmail(userRequest.getEmail());
+        user.setPhone(userRequest.getPhone());
+
+        if (userRequest.getAddress() != null) {
+            Address address = new Address();
+            address.setStreet(userRequest.getAddress().getStreet());
+            address.setCity(userRequest.getAddress().getCity());
+            address.setState(userRequest.getAddress().getState());
+            address.setCountry(userRequest.getAddress().getCountry());
+            address.setZipcode(userRequest.getAddress().getZipcode());
+            user.setAddress(address);
+        }
+    }
+
+    private UserResponse MapToUserResponse(User user) {
+        UserResponse userResponse = new UserResponse();
+        userResponse.setId(String.valueOf(user.getId()));
+        userResponse.setFirstName(user.getFirstName());
+        userResponse.setLastName(user.getLastName());
+        userResponse.setEmail(user.getEmail());
+        userResponse.setPhone(user.getPhone());
+        userResponse.setRole(user.getRole());
+
+        if (user.getAddress() != null) {
+            AddressDTO addressDTO = new AddressDTO();
+            addressDTO.setStreet(user.getAddress().getStreet());
+            addressDTO.setCity(user.getAddress().getCity());
+            addressDTO.setState(user.getAddress().getState());
+            addressDTO.setCountry(user.getAddress().getCountry());
+            addressDTO.setZipcode(user.getAddress().getZipcode());
+            userResponse.setAddress(addressDTO);
+        }
+        return userResponse;
+    }
 }
