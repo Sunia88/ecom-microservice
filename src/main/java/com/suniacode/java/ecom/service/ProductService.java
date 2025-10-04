@@ -7,7 +7,9 @@ import com.suniacode.java.ecom.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +33,7 @@ public class ProductService {
         productResponse.setStockQuantity(savedProduct.getStockQuantity());
         productResponse.setCategory(savedProduct.getCategory());
         productResponse.setImageUrl(savedProduct.getImageUrl());
-        productResponse.setIsActive(savedProduct.getIsActive());
+        productResponse.setIsActive(savedProduct.getActive());
         return productResponse;
     }
 
@@ -51,5 +53,12 @@ public class ProductService {
                     Product updatedProduct = productRepository.save(existingProduct);
                     return mapToProductResponse(updatedProduct);
                 });
+    }
+
+    public List<ProductResponse> getAllProducts() {
+        List<Product> products = productRepository.findByActiveTrue();
+        return products.stream()
+                .map(this::mapToProductResponse)
+                .collect(Collectors.toList());
     }
 }
