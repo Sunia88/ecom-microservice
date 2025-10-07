@@ -1,0 +1,12 @@
+package com.suniacode.java.ecom.repository;
+
+import com.suniacode.java.ecom.model.CartItem;
+import com.suniacode.java.ecom.model.Product;
+import com.suniacode.java.ecom.model.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface CartItemRepository extends JpaRepository<CartItem,Long> {
+    CartItem findByUserAndProduct(User user, Product product);
+}
