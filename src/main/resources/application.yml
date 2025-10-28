@@ -5,6 +5,7 @@
 #spring.jpa.show-sql=true
 #spring.jpa.hibernate.ddl-auto=create
 #management.endpoints.web.exposure.include=*
+#management.endpoint.health.show-details=always
 
 # YAML format
 spring:
@@ -25,3 +26,6 @@ management:
     web:
       exposure:
         include: "*"
+  endpoint:
+    health:
+      show-details: always
