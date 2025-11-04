@@ -30,12 +30,17 @@ management:
   endpoint:
     health:
       show-details: always
-  info:
-    env:
+    shutdown:
       enabled: true
+
+server:
+  shutdown: graceful
 
 info:
   app:
     name: Ecom Microservice Application
     description: This e-commerce backend system using microservice architecture.
     version: 1.0.0
+  env:
+    enabled: true
+
