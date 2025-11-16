@@ -5,3 +5,18 @@ docker push suniadock/ecom-application
 docker run -p 8080:8080 suniadock/ecom-application
 alternatively
 docker run -d -p 8080:8080 suniadock/ecom-application # to run in detached mode(termnal free)
+
+========================================================
+install postgresql on Docker container
+========================================================
+docker run -d --name db -e POSTGRES_PASSWORD=mysecretpassword postgres:16
+
+docker run -d --name pgadmin -e PGADMIN_DEFAULT_EMAIL=user@domain.com -e PGADMIN_DEFAULT_PASSWORD=SuperSecret dpage/pgadmin4
+
+docker network create my-network    # create a user-defined bridge network
+
+docker run -d --name db -network my-network -e POSTGRES_PASSWORD=mysecretpassword postgres:16   # run postgres container in the user-defined network
+
+docker run -d --name pgadmin -network my-network -e PGADMIN_DEFAULT_EMAIL=user@domain.com -e PGADMIN_DEFAULT_PASSWORD=SuperSecret dpage/pgadmin4    # run pgadmin container in the user-defined network
+
+docker exec -it pgadmin ping db # to test connectivity between containers
