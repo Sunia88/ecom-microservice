@@ -12,15 +12,28 @@
 spring:
   application:
     name: ecom-microservice
-  h2:
-    console:
-      enabled: true
   datasource:
-    url: jdbc:h2:mem:commdb
+    url: jdbc:postgresql://localhost:5432/ecomdb
+    username: ecomuser
+    password: ecompass
   jpa:
+    database: POSTGRESQL
     show-sql: true
     hibernate:
-      ddl-auto: create
+          ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+#  Uncomment below lines to use H2 in-memory database
+#  h2:
+#    console:
+#      enabled: true
+#  datasource:
+#    url: jdbc:h2:mem:commdb
+#  jpa:
+#    show-sql: true
+#    hibernate:
+#      ddl-auto: create
+
 
 management:
   endpoints:
@@ -43,4 +56,6 @@ info:
     version: 1.0.0
   env:
     enabled: true
+
+
 
