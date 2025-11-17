@@ -13,7 +13,7 @@ spring:
   application:
     name: ecom-microservice
   datasource:
-    url: jdbc:postgresql://localhost:5432/ecomdb
+    url: jdbc:postgresql://localhost:5432/comdb
     username: ecomuser
     password: ecompass
   jpa:
