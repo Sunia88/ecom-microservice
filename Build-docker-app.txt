@@ -20,3 +20,53 @@ docker run -d --name db -network my-network -e POSTGRES_PASSWORD=mysecretpasswor
 docker run -d --name pgadmin -network my-network -e PGADMIN_DEFAULT_EMAIL=user@domain.com -e PGADMIN_DEFAULT_PASSWORD=SuperSecret dpage/pgadmin4    # run pgadmin container in the user-defined network
 
 docker exec -it pgadmin ping db # to test connectivity between containers
+
+docker rm -f db pgadmin # to remove existing containers
+
+docker network rm my-network # to remove existing user-defined network
+
+docker compose up -d # to start containers defined in docker-compose file in detached mode
+
+docker compose down # to stop and remove containers defined in docker-compose file
+
+========================================================
+Docker compose for PostgreSQL and pgAdmin
+========================================================
+version: '3.8'
+
+networks:
+  my-network:
+    driver: bridge
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: postgres_container
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password123
+      POSTGRES_DB: comdb
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - my-network
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin_container
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: password123
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+    networks:
+      - my-network
+
+volumes:
+  pgdata:
